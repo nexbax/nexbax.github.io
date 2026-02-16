@@ -76,7 +76,7 @@
       color: var(--link-hover);
     }
     figure {
-      margin: 20px 0 18px 0;
+      margin: 36px 0 18px 0;
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow: hidden;
@@ -134,6 +134,11 @@
       clip: rect(1px, 1px, 1px, 1px);
       white-space: nowrap;
     }
+
+    /* Theme color accents for the three themes */
+    .eff { color: #E26836; }      /* Effective Efficiency */
+    .op  { color: #2293CC; }      /* Operational Practicality */
+    .si  { color: #4A9C33; }      /* Societal Integrity */
   </style>
 </head>
 <body>
@@ -147,58 +152,3 @@
       <h2 id="intro-title" class="visually-hidden">Introduction</h2>
 
       <p>
-        The Next Billion AI Index (nexbax) addresses the measurement blind spot in next billion markets, in which AI progress cannot be equated with benchmark supremacy. The index evaluates generative AI systems—including models and agentic architectures—not by abstract performance metrics alone, but by their capacity to deliver economically sustainable, inclusive, and developmentally relevant value across constrained environments. Inspired by the precedent set by Stanford’s Foundation Model Transparency Index​, which spurred greater openness across the AI industry, the nexbax extends that momentum toward inclusivity, accessibility, and innovation for the next billion users, asking not only how powerful systems are, but how meaningfully they serve the global majority. Drawing on Prahalad’s Bottom of the Pyramid principles ​[9]​​ [10]​, nexbax reinterprets them for the generative AI era through <strong>10 measurable dimensions</strong> organised under <strong>3 themes: Effective Efficiency, Operational Practicality, and Societal Integrity</strong>. These capture how well AI solutions balance affordability, adaptability, and social responsibility.
-      </p>
-
-      <p>
-        With clear rubrics and comparative evaluations spanning model families, orchestration frameworks, and vertical solutions, nexbax enables benchmarking that goes beyond performance rewarding technologies that are open, resilient, and socially aligned. In doing so, it aims to incentivise innovation that is not only powerful but also equitable, guiding developers and policymakers toward a more inclusive AI ecosystem.
-      </p>
-
-      <figure id="fig">
-        <div id="imgPlaceholder" class="placeholder" aria-hidden="true">Image placeholder</div>
-        <img id="img" alt="Nexbax overview image" class="hidden" />
-        <figcaption id="figcap">Figure: Overview</figcaption>
-      </figure>
-
-      <div class="actions">
-        <a id="pdfOpen" class="button hidden" target="_blank" rel="noopener">📄 Open the PDF (new tab)</a>
-        <a id="pdfDownload" class="button hidden" download>⬇️ Download the PDF</a>
-      </div>
-    </article>
-  </main>
-
-  <script>
-    const IMAGE_PATH = 'nexbax-infographic.png';
-    const PDF_PATH = 'docs/PDF_FILENAME.pdf';
-
-    async function resourceExists(path) {
-      try {
-        const res = await fetch(path, { method: 'HEAD', cache: 'no-store' });
-        return res.ok;
-      } catch {
-        return false;
-      }
-    }
-
-    (async () => {
-      const imgEl = document.getElementById('img');
-      const placeholderEl = document.getElementById('imgPlaceholder');
-      const pdfOpen = document.getElementById('pdfOpen');
-      const pdfDownload = document.getElementById('pdfDownload');
-
-      if (await resourceExists(IMAGE_PATH)) {
-        imgEl.src = IMAGE_PATH;
-        imgEl.classList.remove('hidden');
-        placeholderEl.classList.add('hidden');
-      }
-
-      if (await resourceExists(PDF_PATH)) {
-        pdfOpen.href = PDF_PATH;
-        pdfDownload.href = PDF_PATH;
-        pdfOpen.classList.remove('hidden');
-        pdfDownload.classList.remove('hidden');
-      }
-    })();
-  </script>
-</body>
-</html>
