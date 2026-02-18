@@ -18,6 +18,7 @@
       --shadow: 0 2px 16px rgba(0,0,0,0.06);
       --radius: 12px;
       --maxw: 760px;
+      --page-bottom: 64px; /* bottom breathing room */
     }
 
     @media (prefers-color-scheme: dark) {
@@ -48,7 +49,7 @@
     .wrap {
       max-width: var(--maxw);
       margin: 48px auto;
-      padding: 0 20px;
+      padding: 0 20px var(--page-bottom); /* bottom padding for breathing room */
     }
 
     header { margin-bottom: 28px; }
@@ -75,28 +76,18 @@
 
     p { margin: 0 0 1rem 0; }
 
-    strong { font-weight: 700; }
-
     a {
       color: var(--link);
       text-decoration: none;
     }
-    a:hover {
-      text-decoration: underline;
-      color: var(--link-hover);
-    }
+    a:hover { text-decoration: underline; color: var(--link-hover); }
 
     figure {
       margin: 36px 0 18px 0;
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow: hidden;
-    }
-
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
+      background: color-mix(in oklab, var(--card) 96%, transparent);
     }
 
     .placeholder {
@@ -114,13 +105,20 @@
       font-size: 0.95rem;
       color: var(--muted);
       border-top: 1px solid var(--border);
-      background: #fafafa;
+      background: color-mix(in oklab, var(--card) 85%, transparent);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     .actions {
       margin-top: 16px;
       display: flex;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     .button {
@@ -134,20 +132,9 @@
       font-weight: 600;
       color: var(--text);
     }
-
-    .button:hover {
-      background: #f3f3f3;
-    }
+    .button:hover { background: #f3f3f3; }
 
     .hidden { display: none !important; }
-
-    .visually-hidden {
-      position: absolute;
-      height: 1px;
-      width: 1px;
-      overflow: hidden;
-      clip: rect(1px,1px,1px,1px);
-    }
 
     /* Theme accents */
     .eff { color: #E26836; }
@@ -157,16 +144,11 @@
     /* Form embed */
     .form-embed {
       margin-top: 32px;
+      border-top: 1px solid var(--border);  /* subtle divider */
+      padding-top: 18px;                    /* space above the form after the divider */
       display: grid;
       place-items: center;
     }
-
-    .form-embed h3 {
-      margin-bottom: 12px;
-      font-size: 1.15rem;
-      font-weight: 600;
-    }
-
     .form-embed iframe {
       width: 100%;
       max-width: 650px;
@@ -187,6 +169,7 @@
     </header>
 
     <article class="card">
+
       <p>
         The Next Billion AI Index (nexbax) addresses the measurement blind spot in next billion markets, in which AI progress cannot be equated with benchmark supremacy. The index evaluates generative AI systems—including models and agentic architectures—not by abstract performance metrics alone, but by their capacity to deliver economically sustainable, inclusive, and developmentally relevant value across constrained environments. Inspired by the precedent set by Stanford’s Foundation Model Transparency Index, which spurred greater openness across the AI industry, the nexbax extends that momentum toward inclusivity, accessibility, and innovation for the next billion users, asking not only how powerful systems are, but how meaningfully they serve the global majority. Drawing on Prahalad’s Bottom of the Pyramid principles, nexbax reinterprets them for the generative AI era through <strong>10 dimensions</strong> organised under <strong>3 themes: <span class="eff">Effective Efficiency</span>, <span class="op">Operational Practicality</span>, and <span class="si">Societal Integrity</span></strong>. These capture how well AI solutions balance affordability, adaptability, and social responsibility.
       </p>
@@ -201,8 +184,8 @@
         <figcaption>
           Overview of the 10 dimensions across the three themes:
           <span class="eff">Effective Efficiency</span>,
-          <span class="op">Operational Practicality</span>,
-          and <span class="si">Societal Integrity</span>.
+          <span class="op">Operational Practicality</span>, and
+          <span class="si">Societal Integrity</span>.
         </figcaption>
       </figure>
 
@@ -211,12 +194,11 @@
         <a id="pdfDownload" class="button hidden" download>⬇️ Download PDF</a>
       </div>
 
-      <div class="form-embed">
-        <h3>Contact us</h3>
+      <div class="form-embed" aria-label="Feedback form">
         <iframe src="https://forms.monday.com/forms/embed/096e27df7246426e32bc91925f30926b?r=use1"
-          width="650" height="500"
-          style="border: 0; box-shadow: 5px 5px 56px rgba(0,0,0,0.25);">
-        </iframe>
+                width="650" height="500"
+                style="border: 0; box-shadow: 5px 5px 56px 0px rgba(0,0,0,0.25); border-radius: 12px;"
+                loading="lazy"></iframe>
       </div>
 
     </article>
@@ -224,17 +206,17 @@
 
   <script>
     const IMAGE_PATH = "nexbax-infographic.png";
-    const PDF_PATH = "docs/PDF_FILENAME.pdf";
+    const PDF_PATH   = "docs/PDF_FILENAME.pdf";
 
     async function exists(path) {
-      try { return (await fetch(path, {method:"HEAD"})).ok; }
+      try { return (await fetch(path, { method: "HEAD", cache: "no-store" })).ok; }
       catch { return false; }
     }
 
     (async () => {
-      const img = document.getElementById("img");
+      const img         = document.getElementById("img");
       const placeholder = document.getElementById("imgPlaceholder");
-      const pdfOpen = document.getElementById("pdfOpen");
+      const pdfOpen     = document.getElementById("pdfOpen");
       const pdfDownload = document.getElementById("pdfDownload");
 
       if (await exists(IMAGE_PATH)) {
