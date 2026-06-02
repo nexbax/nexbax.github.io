@@ -3,235 +3,384 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nexbax — The Next Billion AI Index</title>
-  <meta name="description" content="The Next Billion AI Index (nexbax) — evaluating generative AI for inclusive, sustainable impact across constrained environments." />
+  <title>Nexbax — No Card Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #111111;
-      --muted: #666666;
-      --link: #0b57d0;
-      --link-hover: #0a46a3;
-      --border: #e6e6e6;
-      --card: #fbfbfb;
-      --shadow: 0 2px 16px rgba(0,0,0,0.06);
+      --eff:   #E26836;
+      --op:    #2293CC;
+      --si:    #4A9C33;
+      --text:  #e8edf5;
+      --muted: rgba(255,255,255,0.50);
+      --border: rgba(255,255,255,0.08);
+      --grid:  rgba(255,255,255,0.07);
+      --mono:  'JetBrains Mono', 'Fira Code', monospace;
+      --serif: 'Fraunces', Georgia, serif;
       --radius: 12px;
-      --maxw: 760px;
-      --page-bottom: 64px; /* bottom breathing room */
+      --content-max: 620px; /* readable column width */
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f1115;
-        --text: #eaecf1;
-        --muted: #b0b6c0;
-        --link: #89b4ff;
-        --link-hover: #b3ceff;
-        --border: #242936;
-        --card: #151824;
-        --shadow: none;
-      }
-    }
-
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
 
     html, body {
       margin: 0;
-      height: 100%;
-      background: radial-gradient(1200px 600px at 10% -10%, rgba(11,87,208,0.06), transparent 60%), var(--bg);
+      min-height: 100%;
       color: var(--text);
-      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        radial-gradient(ellipse 80% 60% at 0% 0%,   rgba(226,104,54,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 100% 0%,  rgba(34,147,204,0.30) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(74,156,51,0.30)  0%, transparent 55%),
+        linear-gradient(160deg, #120e2e 0%, #0d1a2e 40%, #0a2210 100%);
+      background-size: 80px 80px, 80px 80px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+      background-attachment: fixed;
     }
 
+    /* ─── Page shell — single centred column ─────────────────── */
     .wrap {
-      max-width: var(--maxw);
-      margin: 48px auto;
-      padding: 0 20px var(--page-bottom); /* bottom padding for breathing room */
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 56px 48px 80px;
     }
 
-    header { margin-bottom: 28px; }
+    @media (max-width: 600px) {
+      .wrap { padding: 40px 24px 64px; }
+    }
+
+    /* ─── Hero ────────────────────────────────────────────────── */
+    .hero {
+      grid-area: hero;
+      margin-bottom: 32px;
+    }
+
+    .header-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--op);
+      margin: 0 0 12px;
+      opacity: 0.9;
+    }
+
+    .hero-title-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.6em;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
 
     h1 {
-      font-size: clamp(1.6rem, 2.6vw + 1rem, 2.2rem);
-      line-height: 1.2;
-      margin: 0 0 8px 0;
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw + 1rem, 5.2rem);
+      font-weight: 900;
+      line-height: 1.0;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .brand {
+      display: inline;
+      background: linear-gradient(90deg, var(--eff) 0%, var(--op) 48%, var(--si) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: grad-shift 6s ease-in-out infinite;
+      background-size: 200% 100%;
+    }
+
+    @keyframes grad-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50%       { background-position: 100% 50%; }
+    }
+
+    .h1-sub {
+      font-family: var(--mono);
+      font-size: clamp(0.8rem, 1.2vw + 0.4rem, 1.15rem);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      line-height: 1;
+      margin-bottom: 0.6em;
     }
 
     .subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1rem;
+      margin: 12px 0 0;
+      line-height: 1.5;
     }
 
-    .card {
-      background: var(--card);
+    .subtitle-tagline {
+      display: block;
+      font-family: var(--mono);
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── Nav / content switcher ─────────────────────────────── */
+    .tab-nav {
+      grid-area: nav;
+      display: flex;
+      gap: 4px;
+      margin-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+
+    .tab {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 16px 10px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .tab:hover { color: rgba(255,255,255,0.8); }
+
+    .tab.active {
+      color: var(--text);
+      border-bottom-color: var(--op);
+    }
+
+    /* ─── Panels ─────────────────────────────────────────────── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .about-figure { margin-top: 36px; }
+
+    .validation-content {
+      color: rgba(255,255,255,0.75);
+    }
+
+    .validation-content h2 {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0 0 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .validation-content h3 {
+      font-family: var(--mono);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--op);
+      margin: 32px 0 12px;
+    }
+    .validation-figure {
+      margin-bottom: 24px;
+    }
+
+    /* ─── Figure ─────────────────────────────────────────────── */
+    figure {
+      margin: 0;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: var(--shadow);
-    }
-
-    p { margin: 0 0 1rem 0; }
-
-    a {
-      color: var(--link);
-      text-decoration: none;
-    }
-    a:hover { text-decoration: underline; color: var(--link-hover); }
-
-    figure {
-      margin: 36px 0 18px 0;
-      border: 1px solid var(--border);
-      border-radius: 10px;
       overflow: hidden;
-      background: color-mix(in oklab, var(--card) 96%, transparent);
     }
 
     .placeholder {
       display: grid;
       place-items: center;
-      aspect-ratio: 16/9;
-      background: repeating-linear-gradient(135deg, #f4f6f8, #eef1f5 12px);
+      aspect-ratio: 4/3;
       color: var(--muted);
-      font-weight: 600;
-      letter-spacing: 0.02em;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 32px 32px;
     }
 
     figcaption {
-      padding: 10px 12px;
-      font-size: 0.95rem;
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
       color: var(--muted);
       border-top: 1px solid var(--border);
-      background: color-mix(in oklab, var(--card) 85%, transparent);
+      background: rgba(255,255,255,0.03);
     }
 
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+    img { width: 100%; height: auto; display: block; }
 
+    /* ─── Body text ──────────────────────────────────────────── */
+    p { margin: 0 0 1rem; }
+
+    .eff { color: var(--eff); font-weight: 600; }
+    .op  { color: var(--op);  font-weight: 600; }
+    .si  { color: var(--si);  font-weight: 600; }
+
+    a { color: var(--op); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── Actions ────────────────────────────────────────────── */
     .actions {
-      margin-top: 16px;
+      margin-top: 18px;
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
     .button {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 10px 14px;
-      border-radius: 10px;
+      gap: 7px;
+      padding: 9px 16px;
+      border-radius: 8px;
       border: 1px solid var(--border);
-      background: var(--bg);
+      background: rgba(255,255,255,0.07);
+      font-family: var(--mono);
+      font-size: 0.82rem;
       font-weight: 600;
       color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .button:hover { background: #f3f3f3; }
+    .button:hover {
+      border-color: rgba(34,147,204,0.5);
+      box-shadow: 0 0 12px rgba(34,147,204,0.20);
+      text-decoration: none;
+    }
 
-    .hidden { display: none !important; }
-
-    /* Theme accents */
-    .eff { color: #E26836; }
-    .op  { color: #2293CC; }
-    .si  { color: #4A9C33; }
-
-    /* Form embed */
+    /* ─── Form embed ─────────────────────────────────────────── */
     .form-embed {
       margin-top: 32px;
-      border-top: 1px solid var(--border);  /* subtle divider */
-      padding-top: 18px;                    /* space above the form after the divider */
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
       display: grid;
       place-items: center;
     }
     .form-embed iframe {
       width: 100%;
-      max-width: 650px;
+      max-width: 100%;
       height: 500px;
       border: 0;
-      box-shadow: 5px 5px 56px rgba(0,0,0,0.25);
+      box-shadow: 5px 5px 40px rgba(0,0,0,0.35);
       border-radius: 12px;
       background: #fff;
     }
+
+
+    .hidden { display: none !important; }
   </style>
 </head>
 
 <body>
   <main class="wrap">
-    <header>
-      <h1>Nexbax — The Next Billion AI Index</h1>
-      <p class="subtitle">Benchmarking generative AI for inclusive, equitable impact.</p>
+
+    <header class="hero">
+      <p class="header-label">// index v0.1 — beta</p>
+      <div class="hero-title-row">
+        <h1><span class="brand">Nexbax</span></h1>
+        <span class="h1-sub">— The Next Billion AI Index</span>
+      </div>
+      <p class="subtitle">
+        <span class="subtitle-tagline">Benchmarking generative AI for inclusive, equitable impact.</span>
+      </p>
     </header>
 
-    <article class="card">
+    <!-- Content switcher -->
+    <nav class="tab-nav" aria-label="Content sections">
+      <button class="tab active" data-panel="about">About</button>
+      <button class="tab" data-panel="validation">Validation</button>
+    </nav>
 
+    <!-- About panel -->
+    <div class="panel active" id="panel-about">
       <p>
-        The Next Billion AI Index (nexbax) addresses the measurement blind spot in next billion markets, in which AI progress cannot be equated with benchmark supremacy. The index evaluates generative AI systems—including models and agentic architectures—not by abstract performance metrics alone, but by their capacity to deliver economically sustainable, inclusive, and developmentally relevant value across constrained environments. Inspired by the precedent set by Stanford’s Foundation Model Transparency Index, which spurred greater openness across the AI industry, the nexbax extends that momentum toward inclusivity, accessibility, and innovation for the next billion users, asking not only how powerful systems are, but how meaningfully they serve the global majority. Drawing on Prahalad’s Bottom of the Pyramid principles, nexbax reinterprets them for the generative AI era through <strong>10 dimensions</strong> organised under <strong>3 themes: <span class="eff">Effective Efficiency</span>, <span class="op">Operational Practicality</span>, and <span class="si">Societal Integrity</span></strong>. These capture how well AI solutions balance affordability, adaptability, and social responsibility.
-      </p>
+          The Next Billion AI Index (nexbax) addresses the measurement blind spot in next billion markets, in which AI progress cannot be equated with benchmark supremacy. The index evaluates generative AI systems—including models and agentic architectures—not by abstract performance metrics alone, but by their capacity to deliver economically sustainable, inclusive, and developmentally relevant value across constrained environments.
+        </p>
+        <p>
+          Inspired by the precedent set by Stanford's Foundation Model Transparency Index, nexbax extends that momentum toward inclusivity, accessibility, and innovation for the next billion users, asking not only how powerful systems are, but how meaningfully they serve the global majority. Drawing on Prahalad's Bottom of the Pyramid principles, nexbax reinterprets them for the generative AI era through <strong>10 dimensions</strong> organised under <strong>3 themes: <span class="eff">Effective Efficiency</span>, <span class="op">Operational Practicality</span>, and <span class="si">Societal Integrity</span></strong>.
+        </p>
+        <p>
+          With clear rubrics and comparative evaluations spanning model families, orchestration frameworks, and vertical solutions, nexbax enables benchmarking that goes beyond performance—rewarding technologies that are open, resilient, and socially aligned.
+        </p>
 
-      <p>
-        With clear rubrics and comparative evaluations spanning model families, orchestration frameworks, and vertical solutions, nexbax enables benchmarking that goes beyond performance—rewarding technologies that are open, resilient, and socially aligned. In doing so, it aims to incentivise innovation that is not only powerful but also equitable, guiding developers and policymakers toward a more inclusive AI ecosystem.
-      </p>
+      <div class="actions">
+        <a class="button" href="https://arxiv.org/abs/2606.00359" target="_blank" rel="noopener">📄 Read the white paper</a>
+      </div>
 
-      <figure>
-        <div id="imgPlaceholder" class="placeholder">Nexbax infographic</div>
-        <img id="img" class="hidden" alt="Nexbax infographic illustrating themes and dimensions" />
+      <figure class="about-figure">
+        <div class="placeholder">[ NEXBAX INFOGRAPHIC ]</div>
         <figcaption>
-          Overview of the 10 dimensions across the three themes:
+          10 dimensions across
           <span class="eff">Effective Efficiency</span>,
           <span class="op">Operational Practicality</span>, and
           <span class="si">Societal Integrity</span>.
         </figcaption>
       </figure>
+    </div>
 
-      <div class="actions">
-        <a id="pdfOpen" class="button hidden" target="_blank" rel="noopener">📄 Open PDF</a>
-        <a id="pdfDownload" class="button hidden" download>⬇️ Download PDF</a>
+    <!-- Validation panel -->
+    <div class="panel" id="panel-validation">
+      <div class="validation-content">
+
+        <h2>Formative Study</h2>
+
+        <p>We conducted an early evaluation of nexbax with eleven subject matter experts working on AI products for next billion markets, including founders, developers, and product leaders across India, Kenya, and Ghana. Over the course of one-hour interviews, participants applied the nexbax dimensions to three common AI configurations: open-weight models, closed models, and model-plus-orchestration systems. The goal was to assess whether the index was clear, useful, and accurate from the perspective of practitioners who build and deploy AI in these contexts.</p>
+
+        <p>Full details can be found in our <a href="https://arxiv.org/abs/2606.00359" target="_blank" rel="noopener">white paper</a>.</p>
+
+        <h3>What we found</h3>
+
+        <p>Experts broadly felt the index captured the factors that matter most in their work. As one participant put it: <em>"All the tools that we use to evaluate our customers beyond localization, you hit all of them, ease of use, reliability, the cost, the set up time. Those are the same types of things that we use to pick our vendors."</em></p>
+
+        <p>The three most important dimensions for this group were <strong>cost effectiveness</strong>, <strong>usability &amp; automation</strong>, and <strong>trustworthiness &amp; ethics</strong>, spanning all three nexbax themes. This provides early evidence that each theme captures a distinct and meaningful aspect of real-world decision-making.</p>
+
+        <p>Participants also saw practical value in having a shared evaluation framework. One described it as an <em>"elimination mechanism"</em> for ruling out technologies that score poorly across dimensions; another said it <em>"would help me choose the right models to use."</em> A developer reflected on the absence of community consensus today: <em>"Within the community, there's no consensus on what works for us...the index would help us as a community figure out what's best for us, beyond just building policy documents."</em></p>
+
+        <h3>What we've improved</h3>
+
+        <p>Participants noted that numerical ratings alone can obscure important nuance. For example, a cost effectiveness score carries different implications depending on whether the focus is upfront setup costs or long-term pricing. In response, future evaluations will include written explanations alongside ratings, and will specify the domain and deployment context to help readers assess relevance to their own situation.</p>
+
+        <p>On usability, most participants found the rubrics straightforward to apply, though some noted they benefited from researcher guidance during the session. We have since added clearer definitions for each dimension, broader examples covering a wider range of use cases, and renamed dimensions where terminology caused confusion. For instance, <em>"Robustness (Resilience and Reliability)"</em> was renamed to <em>"Resilience, Reliability, and Robustness"</em> after several participants interpreted robustness as referring to output accuracy.</p>
+
+        <h3>Next steps</h3>
+
+        <p>We are continuing to improve nexbax and welcome your feedback.</p>
+
+        <div class="form-embed" aria-label="Feedback form">
+          <iframe src="https://forms.monday.com/forms/embed/096e27df7246426e32bc91925f30926b?r=use1"
+                  loading="lazy"></iframe>
+        </div>
       </div>
+    </div>
 
-      <div class="form-embed" aria-label="Feedback form">
-        <iframe src="https://forms.monday.com/forms/embed/096e27df7246426e32bc91925f30926b?r=use1"
-                width="650" height="500"
-                style="border: 0; box-shadow: 5px 5px 56px 0px rgba(0,0,0,0.25); border-radius: 12px;"
-                loading="lazy"></iframe>
-      </div>
-
-    </article>
   </main>
 
   <script>
-    const IMAGE_PATH = "nexbax-infographic.png";
-    const PDF_PATH   = "docs/PDF_FILENAME.pdf";
+    const tabs   = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.panel');
 
-    async function exists(path) {
-      try { return (await fetch(path, { method: "HEAD", cache: "no-store" })).ok; }
-      catch { return false; }
-    }
-
-    (async () => {
-      const img         = document.getElementById("img");
-      const placeholder = document.getElementById("imgPlaceholder");
-      const pdfOpen     = document.getElementById("pdfOpen");
-      const pdfDownload = document.getElementById("pdfDownload");
-
-      if (await exists(IMAGE_PATH)) {
-        img.src = IMAGE_PATH;
-        img.classList.remove("hidden");
-        placeholder.classList.add("hidden");
-      }
-
-      if (await exists(PDF_PATH)) {
-        pdfOpen.href = PDF_PATH;
-        pdfDownload.href = PDF_PATH;
-        pdfOpen.classList.remove("hidden");
-        pdfDownload.classList.remove("hidden");
-      }
-    })();
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+      });
+    });
   </script>
 </body>
 </html>
