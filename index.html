@@ -25,11 +25,13 @@
 
     *, *::before, *::after { box-sizing: border-box; }
 
+    a, button { cursor: pointer; }
+
     html, body {
       margin: 0;
       min-height: 100%;
       color: var(--text);
-      font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font: 500 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       -webkit-font-smoothing: antialiased;
       background:
         linear-gradient(var(--grid) 1px, transparent 1px),
@@ -50,7 +52,29 @@
     }
 
     @media (max-width: 600px) {
-      .wrap { padding: 40px 24px 64px; }
+      .wrap { padding: 32px 18px 56px; }
+
+      /* iOS Safari fix: background-attachment: fixed causes paint bugs */
+      html, body { background-attachment: scroll; }
+
+      /* Tabs: allow horizontal scroll on very small screens */
+      .tab-nav { overflow-x: auto; gap: 0; }
+      .tab { padding: 8px 12px 10px; font-size: 0.72rem; }
+
+      /* Hero: tighten subtitle label spacing when it wraps */
+      .h1-sub { margin-bottom: 0.3em; font-size: clamp(0.7rem, 3.5vw, 0.9rem); }
+      .subtitle-tagline { font-size: 0.95rem; }
+
+      /* Cite block: prevent pre from expanding viewport width */
+      .bibtex-block { max-width: 100%; overflow: hidden; }
+      .bibtex-block pre { font-size: 0.74rem; padding: 16px; }
+      #cite-apa, #cite-mla { padding-top: 48px; }
+
+      /* Blockquotes: reduce side padding */
+      blockquote { padding: 10px 14px; }
+
+      /* Form: slightly taller on mobile so content isn't clipped */
+      .form-embed iframe { height: 560px; }
     }
 
     /* ─── Hero ────────────────────────────────────────────────── */
@@ -121,9 +145,11 @@
     .subtitle-tagline {
       display: block;
       font-family: var(--mono);
-      font-size: 1.05rem;
-      color: rgba(255,255,255,0.65);
-      letter-spacing: 0.01em;
+      font-size: clamp(0.65rem, 1vw + 0.3rem, 0.9rem);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
     }
 
     /* ─── Nav / content switcher ─────────────────────────────── */
@@ -164,9 +190,10 @@
     .panel.active { display: block; }
 
     .about-figure { margin-top: 36px; }
+    .about-figure img, .about-figure .placeholder { margin: 28px; width: calc(100% - 56px); }
 
     .validation-content {
-      color: rgba(255,255,255,0.75);
+      color: var(--text);
     }
 
     .validation-content h2 {
@@ -194,9 +221,13 @@
     /* ─── Figure ─────────────────────────────────────────────── */
     figure {
       margin: 0;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: var(--radius);
       overflow: hidden;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.35);
     }
 
     .placeholder {
@@ -207,17 +238,13 @@
       font-family: var(--mono);
       font-size: 0.8rem;
       letter-spacing: 0.06em;
-      background-image:
-        linear-gradient(var(--grid) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-      background-size: 32px 32px;
     }
 
     figcaption {
       padding: 10px 14px;
       font-family: var(--mono);
       font-size: 0.78rem;
-      color: var(--muted);
+      color: rgba(255,255,255,0.88);
       border-top: 1px solid var(--border);
       background: rgba(255,255,255,0.03);
     }
@@ -226,6 +253,16 @@
 
     /* ─── Body text ──────────────────────────────────────────── */
     p { margin: 0 0 1rem; }
+
+    blockquote {
+      margin: 0 0 1rem;
+      padding: 14px 20px;
+      border-left: 3px solid var(--op);
+      background: linear-gradient(90deg, rgba(34,147,204,0.12) 0%, transparent 100%);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: rgba(255,255,255,0.85);
+    }
 
     .eff { color: var(--eff); font-weight: 600; }
     .op  { color: var(--op);  font-weight: 600; }
@@ -281,6 +318,162 @@
     }
 
 
+    /* ─── Cite sub-nav ───────────────────────────────────────── */
+    .cite-tab-nav {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+
+    .cite-tab {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 14px 9px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .cite-tab:hover { color: rgba(255,255,255,0.8); }
+    .cite-tab.active {
+      color: var(--text);
+      border-bottom-color: var(--op);
+    }
+
+    .cite-entry { display: none; }
+    .cite-entry.active { display: block; }
+
+    /* ─── BibTeX block ────────────────────────────────────────── */
+    .bibtex-block {
+      position: relative;
+      margin-top: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.35);
+    }
+
+    .bibtex-block pre {
+      margin: 0;
+      padding: 20px 24px;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    #cite-apa, #cite-mla {
+      white-space: pre-wrap;
+      padding-top: 52px; /* clear the copy button */
+    }
+
+    .bibtex-copy {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .bibtex-copy:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    /* ─── Team acknowledgments ────────────────────────────────── */
+    .team-ack-heading {
+      font-family: var(--mono);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--op);
+      margin: 56px 0 12px;
+    }
+
+    .team-ack {
+      color: var(--text);
+    }
+
+    /* ─── Team grid ───────────────────────────────────────────── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 56px 48px;
+    }
+
+    @media (max-width: 600px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); gap: 36px 24px; }
+    }
+
+    .team-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .team-card img {
+      width: 72%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+    }
+
+    .team-card a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .team-card a:hover .team-name { color: var(--op); }
+    .team-card a:hover img { border-color: rgba(34,147,204,0.4); }
+
+    .team-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.3;
+      transition: color 0.15s;
+    }
+
+    .team-affil {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+    }
+
     .hidden { display: none !important; }
   </style>
 </head>
@@ -294,14 +487,19 @@
         <span class="h1-sub">— The Next Billion AI Index</span>
       </div>
       <p class="subtitle">
-        <span class="subtitle-tagline">Benchmarking generative AI for inclusive, equitable impact.</span>
+        <span class="subtitle-tagline">The compass for AI utility and adoption in the global majority.</span>
       </p>
+      <div class="actions" style="margin-top: 20px;">
+        <a class="button" href="https://arxiv.org/abs/2606.00359" target="_blank" rel="noopener">📄 Read the white paper</a>
+      </div>
     </header>
 
     <!-- Content switcher -->
     <nav class="tab-nav" aria-label="Content sections">
       <button class="tab active" data-panel="about">About</button>
       <button class="tab" data-panel="validation">Validation</button>
+      <button class="tab" data-panel="team">Team</button>
+      <button class="tab" data-panel="cite">Cite</button>
     </nav>
 
     <!-- About panel -->
@@ -315,10 +513,6 @@
         <p>
           With clear rubrics and comparative evaluations spanning model families, orchestration frameworks, and vertical solutions, nexbax enables benchmarking that goes beyond performance—rewarding technologies that are open, resilient, and socially aligned.
         </p>
-
-      <div class="actions">
-        <a class="button" href="https://arxiv.org/abs/2606.00359" target="_blank" rel="noopener">📄 Read the white paper</a>
-      </div>
 
       <figure class="about-figure">
         <div id="imgPlaceholder" class="placeholder">[ NEXBAX INFOGRAPHIC ]</div>
@@ -338,17 +532,23 @@
 
         <h2>Formative Study</h2>
 
-        <p>We conducted an early evaluation of nexbax with eleven subject matter experts working on AI products for next billion markets, including founders, developers, and product leaders across India, Kenya, and Ghana. Over the course of one-hour interviews, participants applied the nexbax dimensions to three common AI configurations: open-weight models, closed models, and model-plus-orchestration systems. The goal was to assess whether the index was clear, useful, and accurate from the perspective of practitioners who build and deploy AI in these contexts.</p>
+        <p>A formative evaluation of nexbax with eleven experts provided early signal on its efficacy in capturing deployment considerations and its usefulness for practitioners.</p>
 
         <p>Full details can be found in our <a href="https://arxiv.org/abs/2606.00359" target="_blank" rel="noopener">white paper</a>.</p>
 
+        <h3>What we did</h3>
+
+        <p>We conducted an evaluation of nexbax with eleven subject matter experts working on AI products for next billion markets, including founders, developers, and product leaders across India, Kenya, and Ghana. Over the course of one-hour interviews, participants applied the nexbax dimensions to three common AI configurations: open-weight models, closed models, and model-plus-orchestration systems. The goal was to assess whether the index was clear, useful, and accurate from the perspective of practitioners who build and deploy AI in these contexts.</p>
+
         <h3>What we found</h3>
 
-        <p>Experts broadly felt the index captured the factors that matter most in their work. As one participant put it: <em>"All the tools that we use to evaluate our customers beyond localization, you hit all of them, ease of use, reliability, the cost, the set up time. Those are the same types of things that we use to pick our vendors."</em></p>
+        <p>Experts broadly felt the index captured the factors that matter most in their work:</p>
+        <blockquote>"All the tools that we use to evaluate our customers beyond localization, you hit all of them, ease of use, reliability, the cost, the set up time. Those are the same types of things that we use to pick our vendors."</blockquote>
 
         <p>The three most important dimensions for this group were <strong>cost effectiveness</strong>, <strong>usability &amp; automation</strong>, and <strong>trustworthiness &amp; ethics</strong>, spanning all three nexbax themes. This provides early evidence that each theme captures a distinct and meaningful aspect of real-world decision-making.</p>
 
-        <p>Participants also saw practical value in having a shared evaluation framework. One described it as an <em>"elimination mechanism"</em> for ruling out technologies that score poorly across dimensions; another said it <em>"would help me choose the right models to use."</em> A developer reflected on the absence of community consensus today: <em>"Within the community, there's no consensus on what works for us...the index would help us as a community figure out what's best for us, beyond just building policy documents."</em></p>
+        <p>Participants also saw practical value in having a shared evaluation framework. One described it as an <em>"elimination mechanism"</em> for ruling out technologies that score poorly across dimensions; another said it <em>"would help me choose the right models to use."</em> A developer reflected on the absence of community consensus today:</p>
+        <blockquote>"Within the community, there's no consensus on what works for us...the index would help us as a community figure out what's best for us, beyond just building policy documents."</blockquote>
 
         <h3>What we've improved</h3>
 
@@ -356,7 +556,7 @@
 
         <p>On usability, most participants found the rubrics straightforward to apply, though some noted they benefited from researcher guidance during the session. We have since added clearer definitions for each dimension, broader examples covering a wider range of use cases, and renamed dimensions where terminology caused confusion. For instance, <em>"Robustness (Resilience and Reliability)"</em> was renamed to <em>"Resilience, Reliability, and Robustness"</em> after several participants interpreted robustness as referring to output accuracy.</p>
 
-        <h3>Next steps</h3>
+        <h2>Next steps</h2>
 
         <p>We are continuing to improve nexbax and welcome your feedback.</p>
 
@@ -364,6 +564,110 @@
           <iframe src="https://forms.monday.com/forms/embed/096e27df7246426e32bc91925f30926b?r=use1"
                   loading="lazy"></iframe>
         </div>
+      </div>
+    </div>
+
+    <!-- Team panel -->
+    <div class="panel" id="panel-team">
+      <div class="team-grid">
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/ambrishrawat" target="_blank" rel="noopener">
+            <img src="assets/team/ambrish.png" alt="Ambrish Rawat" />
+            <div class="team-name">Ambrish Rawat</div>
+          </a>
+          <div class="team-affil">IBM Research</div>
+        </div>
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/jessicayhe" target="_blank" rel="noopener">
+            <img src="assets/team/jessica.png" alt="Jessica He" />
+            <div class="team-name">Jessica He</div>
+          </a>
+          <div class="team-affil">IBM Research</div>
+        </div>
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/shubhobm" target="_blank" rel="noopener">
+            <img src="assets/team/subhabrata.png" alt="Subhabrata Majumdar" />
+            <div class="team-name">Subhabrata Majumdar</div>
+          </a>
+          <div class="team-affil">Indian Institute of Management Bangalore</div>
+        </div>
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/pinhanez" target="_blank" rel="noopener">
+            <img src="assets/team/claudio.png" alt="Claudio Pinhanez" />
+            <div class="team-name">Claudio Pinhanez</div>
+          </a>
+          <div class="team-affil">University of São Paulo</div>
+        </div>
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/yannlebeux" target="_blank" rel="noopener">
+            <img src="assets/team/yann.png" alt="Yann Le Beux" />
+            <div class="team-name">Yann Le Beux</div>
+          </a>
+          <div class="team-affil">YUX Design</div>
+        </div>
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/satyapriya-k-50553084" target="_blank" rel="noopener">
+            <img src="assets/team/satyapriya.png" alt="Satyapriya Krishna" />
+            <div class="team-name">Satyapriya Krishna</div>
+          </a>
+          <div class="team-affil">Amazon</div>
+        </div>
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/rahulagi-rai" target="_blank" rel="noopener">
+            <img src="assets/team/rahul.png" alt="Rahul Gupta" />
+            <div class="team-name">Rahul Gupta</div>
+          </a>
+          <div class="team-affil">Amazon</div>
+        </div>
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/rumman" target="_blank" rel="noopener">
+            <img src="assets/team/runman.png" alt="Rumman Chowdhury" />
+            <div class="team-name">Rumman Chowdhury</div>
+          </a>
+          <div class="team-affil">Humane Intelligence</div>
+        </div>
+        <div class="team-card">
+          <a href="https://www.linkedin.com/in/kushvarshney" target="_blank" rel="noopener">
+            <img src="assets/team/kush.png" alt="Kush Varshney" />
+            <div class="team-name">Kush Varshney</div>
+          </a>
+          <div class="team-affil">IBM Research</div>
+        </div>
+      </div>
+
+      <h3 class="team-ack-heading">Acknowledgments</h3>
+      <p class="team-ack">We thank Varun Aggarwal, Anthony Annunziata, Ginette Azcona, Daksh Chawla, Nahuel Defosse, Giridhar Ganapavarapu, George K. Githae, Sudeep Gowrishankar, Raghav Gupta, Jaikrishnan Hari, Ronak Khandelwal, Jordan McAfoose, Rohan Sahu, Siddhant Sachdeva, Het Shah, and Amith Singhee for their assistance with the survey process, feedback, and other contributions during the development of this work. Subhabrata Majumdar's research is supported by the Indian Institute of Management Bangalore Young Faculty Research Grant.</p>
+    </div>
+
+    <!-- Cite panel -->
+    <div class="panel" id="panel-cite">
+      <p>If you use nexbax in your work, please cite our white paper:</p>
+
+      <nav class="cite-tab-nav" aria-label="Citation format">
+        <button class="cite-tab active" data-cite="bibtex">BibTeX</button>
+        <button class="cite-tab" data-cite="apa">APA</button>
+        <button class="cite-tab" data-cite="mla">MLA</button>
+      </nav>
+
+      <div class="bibtex-block">
+        <button class="bibtex-copy" onclick="copyCite(this)" aria-label="Copy citation">Copy</button>
+
+        <pre class="cite-entry active" id="cite-bibtex">@misc{rawat2026nexbax,
+  title        = {Next-Billion {AI} Index: The compass for {AI} utility and adoption in the global majority},
+  author       = {Rawat, Ambrish and He, Jessica and Majumdar, Subhabrata and
+                  Pinhanez, Claudio and {Le Beux}, Yann and Krishna, Satyapriya and
+                  Gupta, Rahul and Chowdhury, Rumman and Varshney, Kush R.},
+  year         = {2026},
+  month        = may,
+  eprint       = {2606.00359},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CY},
+  doi          = {10.48550/arXiv.2606.00359}
+}</pre>
+
+        <pre class="cite-entry" id="cite-apa">Rawat, A., He, J., Majumdar, S., Pinhanez, C., Le Beux, Y., Krishna, S., Gupta, R., Chowdhury, R., &amp; Varshney, K. R. (2026). Next-Billion AI Index: The compass for AI utility and adoption in the global majority. arXiv. https://doi.org/10.48550/arXiv.2606.00359</pre>
+
+        <pre class="cite-entry" id="cite-mla">Rawat, Ambrish, et al. "Next-Billion AI Index: The Compass for AI Utility and Adoption in the Global Majority." arXiv, 29 May 2026, arxiv.org/abs/2606.00359.</pre>
       </div>
     </div>
 
@@ -382,19 +686,28 @@
       });
     });
 
-    (async () => {
-      const IMAGE_PATH = "nexbax-infographic.png";
-      const img         = document.getElementById("img");
-      const placeholder = document.getElementById("imgPlaceholder");
-      try {
-        const res = await fetch(IMAGE_PATH, { method: "HEAD", cache: "no-store" });
-        if (res.ok) {
-          img.src = IMAGE_PATH;
-          img.classList.remove("hidden");
-          placeholder.classList.add("hidden");
-        }
-      } catch {}
-    })();
+    document.querySelectorAll('.cite-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.cite-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.cite-entry').forEach(e => e.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('cite-' + tab.dataset.cite).classList.add('active');
+      });
+    });
+
+    function copyCite(btn) {
+      const active = document.querySelector('.cite-entry.active');
+      navigator.clipboard.writeText(active.innerText).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    const img         = document.getElementById("img");
+    const placeholder = document.getElementById("imgPlaceholder");
+    img.onload  = () => { img.classList.remove("hidden"); placeholder.classList.add("hidden"); };
+    img.onerror = () => {};
+    img.src = "nexbax-infographic.png";
   </script>
 </body>
 </html>
