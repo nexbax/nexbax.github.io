@@ -677,14 +677,26 @@
     const tabs   = document.querySelectorAll('.tab');
     const panels = document.querySelectorAll('.panel');
 
+    function activateTab(panelId) {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      const tab = document.querySelector(`.tab[data-panel="${panelId}"]`);
+      const panel = document.getElementById('panel-' + panelId);
+      if (tab && panel) {
+        tab.classList.add('active');
+        panel.classList.add('active');
+      }
+    }
+
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        panels.forEach(p => p.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+        activateTab(tab.dataset.panel);
+        localStorage.setItem('nexbax-tab', tab.dataset.panel);
       });
     });
+
+    const saved = localStorage.getItem('nexbax-tab');
+    if (saved) activateTab(saved);
 
     document.querySelectorAll('.cite-tab').forEach(tab => {
       tab.addEventListener('click', () => {
