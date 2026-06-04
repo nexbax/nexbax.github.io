@@ -102,7 +102,8 @@
       margin-bottom: 6px;
     }
 
-    h1 {
+
+h1 {
       font-family: var(--serif);
       font-size: clamp(2.8rem, 5vw + 1rem, 5.2rem);
       font-weight: 900;
@@ -322,9 +323,11 @@
     .cite-tab-nav {
       display: flex;
       gap: 4px;
-      margin-bottom: 0;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0;
+      align-items: flex-end;
+      padding: 0;
+      border-bottom: none;
+      background: none;
+      border: none;
     }
 
     .cite-tab {
@@ -334,18 +337,23 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--muted);
-      padding: 7px 14px 9px;
+      padding: 7px 18px 9px;
       cursor: pointer;
-      border: none;
-      background: none;
-      border-bottom: 2px solid transparent;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-bottom: none;
+      border-radius: var(--radius) var(--radius) 0 0;
       margin-bottom: -1px;
-      transition: color 0.15s, border-color 0.15s;
+      transition: color 0.15s, background 0.15s;
     }
-    .cite-tab:hover { color: rgba(255,255,255,0.8); }
+    .cite-tab:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.07); }
     .cite-tab.active {
       color: var(--text);
-      border-bottom-color: var(--op);
+      background: #1a2035;
+      border-color: rgba(255,255,255,0.12);
+      border-bottom-color: #1a2035;
+      z-index: 1;
+      position: relative;
     }
 
     .cite-entry { display: none; }
@@ -354,12 +362,9 @@
     /* ─── BibTeX block ────────────────────────────────────────── */
     .bibtex-block {
       position: relative;
-      margin-top: 16px;
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: var(--radius);
-      background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      border-radius: 0 0 var(--radius) var(--radius);
+      background: #1a2035;
       box-shadow: 0 4px 32px rgba(0,0,0,0.35);
     }
 
@@ -420,12 +425,20 @@
     /* ─── Team grid ───────────────────────────────────────────── */
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 56px 48px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px 24px;
     }
 
-    @media (max-width: 600px) {
+    /* Centre the last two items in the final row */
+    .team-card:nth-child(9),
+    .team-card:nth-child(10) {
+      grid-column: span 1;
+    }
+    .team-card:nth-child(9) { grid-column-start: 2; }
+
+    @media (max-width: 700px) {
       .team-grid { grid-template-columns: repeat(2, 1fr); gap: 36px 24px; }
+      .team-card:nth-child(9) { grid-column-start: auto; }
     }
 
     .team-card {
@@ -437,7 +450,7 @@
     }
 
     .team-card img {
-      width: 72%;
+      width: 88%;
       aspect-ratio: 1;
       object-fit: cover;
       border-radius: 50%;
@@ -482,7 +495,7 @@
   <main class="wrap">
 
     <header class="hero">
-<div class="hero-title-row">
+      <div class="hero-title-row">
         <h1><span class="brand">Nexbax</span></h1>
         <span class="h1-sub">— The Next Billion AI Index</span>
       </div>
@@ -556,7 +569,7 @@
 
         <p>On usability, most participants found the rubrics straightforward to apply, though some noted they benefited from researcher guidance during the session. We have since added clearer definitions for each dimension, broader examples covering a wider range of use cases, and renamed dimensions where terminology caused confusion. For instance, <em>"Robustness (Resilience and Reliability)"</em> was renamed to <em>"Resilience, Reliability, and Robustness"</em> after several participants interpreted robustness as referring to output accuracy.</p>
 
-        <h2>Next steps</h2>
+        <h2>Next Steps</h2>
 
         <p>We are continuing to improve nexbax and welcome your feedback.</p>
 
@@ -564,6 +577,7 @@
           <iframe src="https://forms.monday.com/forms/embed/096e27df7246426e32bc91925f30926b?r=use1"
                   loading="lazy"></iframe>
         </div>
+      </div>
       </div>
     </div>
 
@@ -627,6 +641,13 @@
           <div class="team-affil">Humane Intelligence</div>
         </div>
         <div class="team-card">
+          <a href="https://www.linkedin.com/in/hiwot-tadesse" target="_blank" rel="noopener">
+            <img src="assets/team/hiwot.jpeg" alt="Hiwot Tadesse" />
+            <div class="team-name">Hiwot Tadesse</div>
+          </a>
+          <div class="team-affil">IBM Research</div>
+        </div>
+        <div class="team-card">
           <a href="https://www.linkedin.com/in/kushvarshney" target="_blank" rel="noopener">
             <img src="assets/team/kush.png" alt="Kush Varshney" />
             <div class="team-name">Kush Varshney</div>
@@ -643,6 +664,7 @@
     <div class="panel" id="panel-cite">
       <p>If you use nexbax in your work, please cite our white paper:</p>
 
+      <div style="margin-top: 16px;">
       <nav class="cite-tab-nav" aria-label="Citation format">
         <button class="cite-tab active" data-cite="bibtex">BibTeX</button>
         <button class="cite-tab" data-cite="apa">APA</button>
@@ -691,11 +713,11 @@
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         activateTab(tab.dataset.panel);
-        localStorage.setItem('nexbax-tab', tab.dataset.panel);
+        sessionStorage.setItem('nexbax-tab', tab.dataset.panel);
       });
     });
 
-    const saved = localStorage.getItem('nexbax-tab');
+    const saved = sessionStorage.getItem('nexbax-tab');
     if (saved) activateTab(saved);
 
     document.querySelectorAll('.cite-tab').forEach(tab => {
